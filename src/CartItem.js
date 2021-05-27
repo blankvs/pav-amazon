@@ -1,7 +1,26 @@
 import React from "react";
 import styled from "styled-components";
+import { db } from "./firebase";
 
-function CartItem({id, item}) {
+function CartItem({ id, item }) {
+
+    const deleteItem = (e) => {
+        e.preventDefault()
+        db.collection('cartItems').doc(id).delete()
+    }
+
+  let options = [];
+
+  for (let i = 1; i < Math.max(item.quantity + 1, 20); i++) {
+    options.push(<option value={i}>Qty: {i}</option>);
+  }
+
+  const changeQuantity = (newQuantity) => {
+    db.collection('cartItems').doc(id).update({
+        quantity: parseInt(newQuantity)
+    })
+  }
+
   return (
     <Container>
       <ImageContainer>
@@ -10,13 +29,18 @@ function CartItem({id, item}) {
 
       <CartItemInfo>
         <CartItemInfoTop>
-          <h2>
-            {item.name}
-          </h2>
+          <h2>{item.name}</h2>
         </CartItemInfoTop>
         <CartItemInfoBottom>
-          <CartItemQuantityContainer>{item.quantity}</CartItemQuantityContainer>
-          <CartItemDeleteContainer>Delete</CartItemDeleteContainer>
+          <CartItemQuantityContainer>
+            <select value=
+                {item.quantity}
+                onChange={(e) => changeQuantity(e.target.value)}
+            >
+                {options}
+            </select>
+          </CartItemQuantityContainer>
+          <CartItemDeleteContainer onClick={deleteItem}>Delete</CartItemDeleteContainer>
         </CartItemInfoBottom>
       </CartItemInfo>
       <CartItemPrice>{item.price}</CartItemPrice>
@@ -30,6 +54,7 @@ const Container = styled.div`
   padding-top: 12px;
   padding-bottom: 12px;
   display: flex;
+  border-bottom: 1px solid #ddd;
 `;
 
 const ImageContainer = styled.div`
@@ -45,7 +70,9 @@ const ImageContainer = styled.div`
   }
 `;
 
-const CartItemInfo = styled.div``;
+const CartItemInfo = styled.div`
+  flex-grow: 1;
+`;
 
 const CartItemInfoTop = styled.div`
   color: #007185;
@@ -57,9 +84,20 @@ const CartItemInfoTop = styled.div`
 
 const CartItemInfoBottom = styled.div`
   display: flex;
+  align-items: center;
 `;
 
-const CartItemQuantityContainer = styled.div``;
+const CartItemQuantityContainer = styled.div`
+  select {
+    border-radius: 7px;
+    background-color: #f0f2f2;
+    padding: 8px;
+    box-shadow: 0 2px 5px rgba(15, 15, 17, 0.15);
+    select:focus {
+      outline: none;
+    }
+  }
+`;
 
 const CartItemDeleteContainer = styled.div`
   color: #007185;

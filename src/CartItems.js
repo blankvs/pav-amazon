@@ -9,14 +9,9 @@ function CartItems({ cartItems }) {
       <hr />
       <ItemsContainer>
         <ItemsContainer>
-          {
-            cartItems.map((item) => (
-              <CartItem 
-                id={item.id} 
-                item={item.product} 
-              />
-            ))
-          }
+          {cartItems.map((item) => (
+            <CartItem id={item.id} item={item.product} />
+          ))}
         </ItemsContainer>
       </ItemsContainer>
     </Container>
@@ -26,13 +21,15 @@ function CartItems({ cartItems }) {
 export default CartItems;
 
 const Container = styled.div`
-  height: 300px;
+  /* height: 300px; */
   flex: 0.8;
   padding: 20px;
   margin-right: 18px;
   background-color: white;
 `;
 
-const Title = styled.div``;
+const Title = styled.h1`
+  margin-bottom: 8px;
+`;
 
 const ItemsContainer = styled.div``;
