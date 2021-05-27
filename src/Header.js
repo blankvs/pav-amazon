@@ -98,7 +98,6 @@ const HeaderSearch = styled.div`
   overflow: hidden;
   margin-left: 4px;
   background-color: white;
-
   :focus-within {
     box-shadow: 0 0 0 3px #f90;
   }
@@ -107,8 +106,11 @@ const HeaderSearch = styled.div`
 const HeaderSearchInput = styled.input`
   flex-grow: 1;
   border: 0;
+  outline: none;
   :focus {
     border: none;
+    color: transparent;
+    text-shadow: 0 0 0 #000000;
   }
 `;
 
